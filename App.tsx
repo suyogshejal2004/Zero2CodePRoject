@@ -4,13 +4,16 @@
  *
  * @format
  */
-
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
 import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import SplashScreen from './src/screens/SplashScreen';
+import OnboardingScreen from './src/screens/OnboardingScreen';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -18,7 +21,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+     <OnboardingScreen/>
     </SafeAreaProvider>
   );
 }
