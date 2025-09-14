@@ -2,6 +2,16 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
+
+#Some Screenshot 
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/36343bc1-cad7-4cbe-92f3-ec98657f61b7" />
+
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/989e30f8-a0e8-4bee-ac03-635318347717" />
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/d2760611-ef57-47bd-b573-f4addd995517" />
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/d971e0b3-02c3-4176-baf6-fed12deea62e" />
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/eebbb0da-e3ad-438b-8131-c7ffe376824b" />
+
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
 ## Step 1: Start Metro
