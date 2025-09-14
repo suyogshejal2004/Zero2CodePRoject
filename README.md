@@ -1,110 +1,109 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+```markdown
+# 📱 Coding Learning App
 
+A mobile application built with **React Native CLI** for learning coding.  
+Currently, the app includes **Onboarding** and **Authentication** UI screens.  
 
-#Some Screenshot 
+---
+
+## 🚀 Features (Implemented)
+- ✅ **Splash Screen**
+- ✅ **Onboarding Screens**
+- ✅ **Login Screen**
+- ✅ **Signup Screen**
+- ✅ **Forgot Password Screen**
+
+---
+
+## 🛠️ Tech Stack
+- **React Native CLI**
+- **JavaScript / TypeScript** (depending on setup)
+- **React Navigation** – navigation between screens
+- **Vector Icons** – modern icons
+- **Async Storage** (future: local data storage)
+
+---
+
+## 📂 Project Structure
+```
+
+CodingLearningApp/
+│-- android/         # Native Android files
+│-- ios/             # Native iOS files
+│-- src/
+│   ├── assets/      # Images, icons, fonts
+│   ├── components/  # Reusable components
+│   ├── navigation/  # Navigation setup
+│   ├── screens/     # App screens (Onboarding, Auth, etc.)
+│   └── utils/       # Helper functions
+│-- App.js           # Main entry
+│-- package.json
+│-- README.md
+
+````
+
+---
+
+## ▶️ Installation & Running
+Make sure you have **Node.js**, **React Native CLI**, and Android/iOS environment ready.
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/coding-learning-app.git
+
+# Navigate into the project folder
+cd coding-learning-app
+
+# Install dependencies
+npm install
+
+# Run on Android
+npx react-native run-android
+
+# Run on iOS (Mac only)
+npx react-native run-ios
+````
+
+---
+
+## 📸 Screenshots (UI Preview)
+
 <p align="center">
- <img width="300" alt="Image" src="https://github.com/user-attachments/assets/36343bc1-cad7-4cbe-92f3-ec98657f61b7" />
- <img width="300" alt="Image" src="https://github.com/user-attachments/assets/989e30f8-a0e8-4bee-ac03-635318347717" />
-  <img width="300" alt="Image" src="https://github.com/user-attachments/assets/d2760611-ef57-47bd-b573-f4addd995517" />
-   <img width="300" alt="Image" src="https://github.com/user-attachments/assets/d971e0b3-02c3-4176-baf6-fed12deea62e" />
-    <img width="300" alt="Image" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
-   <img width="300" alt="Image"  src="https://github.com/user-attachments/assets/eebbb0da-e3ad-438b-8131-c7ffe376824b" />
-     <img width="300" alt="Image" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
-
+ <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/36343bc1-cad7-4cbe-92f3-ec98657f61b7" />
+ <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/989e30f8-a0e8-4bee-ac03-635318347717" />
+ <img width="300" alt="Login" src="https://github.com/user-attachments/assets/d2760611-ef57-47bd-b573-f4addd995517" />
+ <img width="300" alt="Signup" src="https://github.com/user-attachments/assets/d971e0b3-02c3-4176-baf6-fed12deea62e" />
+ <img width="300" alt="Forgot Password" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
+ <img width="300" alt="Splash Screen" src="https://github.com/user-attachments/assets/eebbb0da-e3ad-438b-8131-c7ffe376824b" />
+ <img width="300" alt="Extra Screen" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
 </p>
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 🔮 Future Roadmap
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+* 📚 Add **Course List** screen
+* ▶️ Add **Video Lessons & Code Editor**
+* 👤 Implement **User Profiles**
+* 📊 Add **Progress Tracking & Achievements**
+* ☁️ Integrate **Backend & Database**
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## 🤝 Contributing
 
-# OR using Yarn
-yarn start
+Pull requests are welcome. For major changes, please open an issue first to discuss what you’d like to change.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+👉 Do you also want me to design a **fancy header with a logo/title banner** (so your README looks like a professional open-source project on GitHub)?
 ```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
