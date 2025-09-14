@@ -3,29 +3,39 @@ import {
   StyleSheet,
   View,
   Text,
-  Animated,
-  Easing,
   Dimensions,
   TouchableOpacity,
-  PanResponder
 } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  withSequence,
+  withDelay,
+  interpolate,
+  Extrapolate,
+} from 'react-native-reanimated';
+import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-handler';
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('window');
 
+// Replace these with your actual Lottie animation imports
+const CodingAnimation = require('../asset/Codinganimation.json');
+const RocketAnimation = require('../asset/rocket.json');
+const IdeaAnimation = require('../asset/Ideaanimation.json')
+const SuccessAnimation = require('../asset/successanimation.json');
+
 const OnboardingScreen = ({ onComplete }) => {
   const [currentScreen, setCurrentScreen] = useState(0);
-  const flipAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(0)).current;
-  const parallaxAnim = useRef(new Animated.Value(0)).current;
-  const rotateXAnim = useRef(new Animated.Value(0)).current;
-
-  // Parallax layers
-  const parallaxLayers = useRef([
-    new Animated.Value(0),
-    new Animated.Value(0),
-    new Animated.Value(0)
-  ]).current;
+  const progress = useSharedValue(0);
+  const rotateX = useSharedValue(0);
+  const rotateY = useSharedValue(0);
+  const cardScale = useSharedValue(1);
+  const buttonOpacity = useSharedValue(0);
+  const descriptionOpacity = useSharedValue(0); // Using Reanimated for consistency
+  const lottieRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   const onboardingScreens = [
     {
@@ -33,129 +43,64 @@ const OnboardingScreen = ({ onComplete }) => {
       description: "Write real code from day one with our interactive coding environment.",
       icon: "💻",
       code: `function welcome() {\n  console.log("Start coding!");\n}`,
-      color: "#64ffda"
+      color: "#64ffda",
+      animation: CodingAnimation,
+      animationText: "> Initializing learning environment..."
     },
     {
       title: "Instant Feedback",
       description: "Get real-time results and suggestions as you write your code.",
       icon: "⚡",
       code: `if (codeWorks) {\n  celebrate();\n} else {\n  learnMore();\n}`,
-      color: "#ff6b6b"
+      color: "#ff6b6b",
+      animation: RocketAnimation,
+      animationText: "> Code analysis complete!"
     },
     {
       title: "Master Concepts",
       description: "Progress from basics to advanced topics with structured learning paths.",
       icon: "🚀",
       code: `while(!succeed) {\n  tryAgain();\n  learnFromMistakes();\n}`,
-      color: "#74b9ff"
+      color: "#74b9ff",
+      animation: IdeaAnimation,
+      animationText: "> Loading advanced concepts... 🎯"
     },
     {
       title: "Build Projects",
       description: "Apply your skills by building real-world applications and projects.",
       icon: "🏗️",
       code: `const portfolio = [\n  projects,\n  skills,\n  achievements\n];`,
-      color: "#fdcb6e"
+      color: "#fdcb6e",
+      animation: SuccessAnimation,
+      animationText: "> Project template ready! 🚀"
     }
   ];
 
-  // Create pan responder for 3D tilt effect
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        const { moveX, moveY } = gestureState;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        
-        const rotateX = ((moveY - centerY) / centerY) * 10; // Max 10 degrees
-        const rotateY = ((moveX - centerX) / centerX) * 10; // Max 10 degrees
-        
-        rotateXAnim.setValue(rotateX);
-        parallaxAnim.setValue(rotateY);
-        
-        // Move parallax layers at different speeds
-        parallaxLayers[0].setValue(rotateY * 0.3);
-        parallaxLayers[1].setValue(rotateY * 0.6);
-        parallaxLayers[2].setValue(rotateY * 0.9);
-      },
-      onPanResponderRelease: () => {
-        // Return to original position with spring animation
-        Animated.parallel([
-          Animated.spring(rotateXAnim, {
-            toValue: 0,
-            friction: 5,
-            useNativeDriver: true,
-          }),
-          Animated.spring(parallaxAnim, {
-            toValue: 0,
-            friction: 5,
-            useNativeDriver: true,
-          }),
-          Animated.spring(parallaxLayers[0], {
-            toValue: 0,
-            friction: 5,
-            useNativeDriver: true,
-          }),
-          Animated.spring(parallaxLayers[1], {
-            toValue: 0,
-            friction: 5,
-            useNativeDriver: true,
-          }),
-          Animated.spring(parallaxLayers[2], {
-            toValue: 0,
-            friction: 5,
-            useNativeDriver: true,
-          })
-        ]).start();
-      }
-    })
-  ).current;
-
   useEffect(() => {
     // Reset animations when screen changes
-    flipAnim.setValue(0);
-    fadeAnim.setValue(0);
-    slideAnim.setValue(0);
-    rotateXAnim.setValue(0);
-    parallaxAnim.setValue(0);
+    progress.value = withTiming(0, { duration: 0 });
+    rotateX.value = withTiming(0, { duration: 0 });
+    rotateY.value = withTiming(0, { duration: 0 });
+    cardScale.value = withTiming(1, { duration: 0 });
+    buttonOpacity.value = withTiming(0, { duration: 0 });
+    descriptionOpacity.value = withTiming(0, { duration: 0 });
+
+    // Play the Lottie animation for the current screen
+    if (lottieRefs[currentScreen].current) {
+      lottieRefs[currentScreen].current.reset(); // Reset to start from the beginning
+      lottieRefs[currentScreen].current.play();
+    }
 
     // Animate in new screen
-    Animated.parallel([
-      Animated.timing(flipAnim, {
-        toValue: 1,
-        duration: 1000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 800,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 1,
-        duration: 700,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      })
-    ]).start();
+    progress.value = withTiming(1, { duration: 800 });
+    cardScale.value = withSequence(
+      withTiming(1.1, { duration: 300 }),
+      withSpring(1, { damping: 10 })
+    );
+    buttonOpacity.value = withDelay(500, withTiming(1, { duration: 600 }));
+    descriptionOpacity.value = withDelay(300, withTiming(1, { duration: 800 }));
+
   }, [currentScreen]);
-
-  const flipInterpolate = flipAnim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: ['0deg', '90deg', '0deg']
-  });
-
-  const fadeInterpolate = fadeAnim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0, 0, 1]
-  });
-
-  const slideInterpolate = slideAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [100, 0]
-  });
 
   const nextScreen = () => {
     if (currentScreen < onboardingScreens.length - 1) {
@@ -171,42 +116,105 @@ const OnboardingScreen = ({ onComplete }) => {
     }
   };
 
+  const onGestureEvent = (event) => {
+    'worklet';
+    const { translationX, translationY } = event;
+    rotateX.value = translationY / 20;
+    rotateY.value = translationX / 20;
+  };
+
+  const onHandlerStateChange = (event) => {
+    'worklet';
+    if (event.nativeEvent.state === 5) { // END state
+      rotateX.value = withSpring(0, { damping: 10 });
+      rotateY.value = withSpring(0, { damping: 10 });
+    }
+  };
+
   const screen = onboardingScreens[currentScreen];
 
-  return (
-    <View style={styles.container}>
-      {/* Animated background elements with parallax */}
-      <Animated.View style={[
-        styles.backgroundCircle,
-        { 
-          backgroundColor: screen.color,
-          transform: [
-            { translateX: parallaxLayers[0] }
-          ]
-        }
-      ]} />
-      
-      <Animated.View style={[
-        styles.backgroundSquare,
-        { 
-          borderColor: screen.color,
-          transform: [
-            { translateX: parallaxLayers[1] }
-          ]
-        }
-      ]} />
-      
-      <Animated.View style={[
-        styles.backgroundHexagon,
-        { 
-          borderColor: screen.color,
-          transform: [
-            { translateX: parallaxLayers[2] }
-          ]
-        }
-      ]} />
+  const cardAnimatedStyle = useAnimatedStyle(() => {
+    const rotateXValue = interpolate(
+      rotateX.value,
+      [-10, 10],
+      [-10, 10],
+      Extrapolate.CLAMP
+    );
+    const rotateYValue = interpolate(
+      rotateY.value,
+      [-10, 10],
+      [-10, 10],
+      Extrapolate.CLAMP
+    );
 
-      <View style={styles.content} {...panResponder.panHandlers}>
+    return {
+      transform: [
+        { perspective: 1000 },
+        { rotateX: `${rotateXValue}deg` },
+        { rotateY: `${rotateYValue}deg` },
+        { scale: cardScale.value },
+      ],
+      shadowOffset: {
+        width: -rotateYValue * 2,
+        height: rotateXValue * 2,
+      },
+    };
+  });
+
+  const buttonAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: buttonOpacity.value,
+      transform: [{
+        translateY: interpolate(
+          buttonOpacity.value,
+          [0, 1],
+          [20, 0]
+        )
+      }]
+    };
+  });
+
+  const lottieAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{
+        scale: interpolate(
+          progress.value,
+          [0, 1],
+          [0.8, 1]
+        )
+      }]
+    };
+  });
+
+  const backgroundAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { 
+          translateX: interpolate(
+            rotateY.value, 
+            [-10, 10], 
+            [10, -10]
+          ) 
+        },
+        { 
+          translateY: interpolate(
+            rotateX.value, 
+            [-10, 10], 
+            [10, -10]
+          ) 
+        },
+      ],
+    };
+  });
+
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      {/* Animated background elements */}
+      <Animated.View style={[styles.backgroundCircle, backgroundAnimatedStyle, { backgroundColor: screen.color }]} />
+      <Animated.View style={[styles.backgroundSquare, backgroundAnimatedStyle, { borderColor: screen.color }]} />
+      <Animated.View style={[styles.backgroundHexagon, backgroundAnimatedStyle, { borderColor: screen.color }]} />
+
+      <View style={styles.content}>
         {/* Progress indicator */}
         <View style={styles.progressContainer}>
           {onboardingScreens.map((_, index) => (
@@ -214,75 +222,46 @@ const OnboardingScreen = ({ onComplete }) => {
               key={index} 
               style={[
                 styles.progressDot, 
-                index === currentScreen && styles.activeProgressDot,
-                index < currentScreen && styles.completedProgressDot
+                index === currentScreen && [styles.activeProgressDot, { backgroundColor: screen.color }],
+                index < currentScreen && [styles.completedProgressDot, { backgroundColor: screen.color }]
               ]} 
             />
           ))}
         </View>
 
-        {/* 3D Card with enhanced effects */}
-        <Animated.View style={[
-          styles.card,
-          { 
-            transform: [
-              { rotateY: flipInterpolate },
-              { rotateX: rotateXAnim.interpolate({
-                inputRange: [-10, 0, 10],
-                outputRange: ['-10deg', '0deg', '10deg']
-              }) },
-              { perspective: 1000 }
-            ],
-            opacity: fadeInterpolate,
-            shadowColor: screen.color,
-          }
-        ]}>
-          <View style={[styles.cardFront, { borderColor: screen.color }]}>
-            <Animated.View style={[
-              styles.iconContainer,
-              { 
-                backgroundColor: screen.color,
-                transform: [
-                  { rotate: flipInterpolate }
-                ]
-              }
-            ]}>
-              <Text style={styles.cardIcon}>{screen.icon}</Text>
-            </Animated.View>
-            
-            <Text style={[styles.cardTitle, { color: screen.color }]}>{screen.title}</Text>
-            
-            <View style={[styles.codeContainer, { borderColor: screen.color }]}>
-              <Text style={[styles.codeText, { color: screen.color }]}>{screen.code}</Text>
-            </View>
-          </View>
+        {/* Lottie Animation */}
+        <Animated.View style={[styles.animationContainer, lottieAnimatedStyle]}>
+          <LottieView
+            ref={lottieRefs[currentScreen]}
+            source={screen.animation}
+            autoPlay
+            loop
+            style={styles.lottieAnimation}
+          />
         </Animated.View>
 
-        {/* Description with floating animation */}
-        <Animated.View style={[
-          styles.descriptionContainer,
-          { 
-            opacity: fadeInterpolate,
-            transform: [{ translateY: slideInterpolate }]
-          }
-        ]}>
+        <PanGestureHandler
+          onGestureEvent={onGestureEvent}
+          onHandlerStateChange={onHandlerStateChange}
+        >
+          <Animated.View style={[styles.card, cardAnimatedStyle, { shadowColor: screen.color }]}>
+            <View style={[styles.cardFront, { borderColor: screen.color }]}>
+              <Text style={[styles.cardTitle, { color: screen.color }]}>{screen.title}</Text>
+              
+              <View style={[styles.codeContainer, { borderColor: screen.color }]}>
+                <Text style={[styles.codeText, { color: screen.color }]}>{screen.code}</Text>
+              </View>
+            </View>
+          </Animated.View>
+        </PanGestureHandler>
+
+        {/* Description with animation */}
+        <Animated.View style={[styles.descriptionContainer, { opacity: descriptionOpacity.value }]}>
           <Text style={styles.cardDescription}>{screen.description}</Text>
         </Animated.View>
 
         {/* Interactive terminal */}
-        <Animated.View style={[
-          styles.terminalWindow,
-          { 
-            opacity: fadeInterpolate,
-            transform: [
-              { translateY: slideInterpolate },
-              { rotateX: rotateXAnim.interpolate({
-                inputRange: [-10, 0, 10],
-                outputRange: ['-2deg', '0deg', '2deg']
-              }) }
-            ]
-          }
-        ]}>
+        <View style={[styles.terminalWindow, { borderColor: screen.color }]}>
           <View style={styles.terminalHeader}>
             <View style={styles.terminalButtons}>
               <View style={[styles.terminalButton, styles.closeButton]} />
@@ -292,34 +271,17 @@ const OnboardingScreen = ({ onComplete }) => {
             <Text style={styles.terminalTitle}>terminal</Text>
           </View>
           <View style={styles.terminalBody}>
-            <Text style={styles.terminalOutput}>
-              {currentScreen === 0 && "> Initializing learning environment..."}
-              {currentScreen === 1 && "> Code analysis complete!"}
-              {currentScreen === 2 && "> Loading advanced concepts... 🎯"}
-              {currentScreen === 3 && "> Project template ready! 🚀"}
+            <Text style={[styles.terminalOutput, { color: screen.color }]}>
+              {screen.animationText}
             </Text>
             <View style={styles.commandLine}>
               <Text style={styles.prompt}>$ </Text>
-              <Animated.View style={[
-                styles.cursor, 
-                { 
-                  opacity: fadeAnim.interpolate({
-                    inputRange: [0, 0.5, 1],
-                    outputRange: [1, 0, 1]
-                  })
-                }
-              ]} />
+              <View style={[styles.cursor, { backgroundColor: screen.color }]} />
             </View>
           </View>
-        </Animated.View>
+        </View>
 
-        <Animated.View style={[
-          styles.buttonContainer,
-          { 
-            opacity: fadeInterpolate,
-            transform: [{ translateY: slideInterpolate }]
-          }
-        ]}>
+        <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle]}>
           <TouchableOpacity 
             style={[styles.button, styles.prevButton, { opacity: currentScreen === 0 ? 0.5 : 1 }]}
             onPress={prevScreen}
@@ -340,7 +302,7 @@ const OnboardingScreen = ({ onComplete }) => {
           </TouchableOpacity>
         </Animated.View>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
@@ -389,7 +351,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 40,
+    marginBottom: 20,
     zIndex: 10,
   },
   progressDot: {
@@ -400,18 +362,26 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   activeProgressDot: {
-    backgroundColor: '#64ffda',
     transform: [{ scale: 1.4 }],
   },
   completedProgressDot: {
-    backgroundColor: '#64ffda',
+    // Color is set dynamically
+  },
+  animationContainer: {
+    width: 200,
+    height: 200,
+    marginBottom: 10,
+  },
+  lottieAnimation: {
+    width: '100%',
+    height: '100%',
   },
   card: {
     width: width * 0.8,
-    height: height * 0.4,
+    height: height * 0.3,
     backgroundColor: 'transparent',
     backfaceVisibility: 'hidden',
-    marginBottom: 30,
+    marginBottom: 25,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 20,
@@ -428,22 +398,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backfaceVisibility: 'hidden',
-  },
-  iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    shadowColor: '#fff',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 10,
-  },
-  cardIcon: {
-    fontSize: 40,
   },
   cardTitle: {
     fontSize: 28,
@@ -465,6 +419,7 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 14,
     lineHeight: 20,
+    textAlign: 'center',
   },
   descriptionContainer: {
     marginBottom: 25,
@@ -481,7 +436,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(10, 15, 30, 0.9)',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(100, 255, 218, 0.3)',
     overflow: 'hidden',
     marginBottom: 30,
     shadowColor: '#64ffda',
@@ -527,7 +481,6 @@ const styles = StyleSheet.create({
     minHeight: 80,
   },
   terminalOutput: {
-    color: '#00ffaa',
     fontSize: 14,
     fontFamily: 'monospace',
     marginBottom: 10,
@@ -545,7 +498,6 @@ const styles = StyleSheet.create({
   cursor: {
     width: 8,
     height: 16,
-    backgroundColor: '#64ffda',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -570,7 +522,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   nextButton: {
-    backgroundColor: '#64ffda',
+    // Background color is set dynamically
   },
   buttonText: {
     color: '#0a0e17',
