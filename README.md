@@ -8,6 +8,7 @@
 
 
 
+
 A mobile application built with **React Native CLI** for learning coding.  
 Currently, the app includes **Onboarding** and **Authentication** UI screens.  
 
