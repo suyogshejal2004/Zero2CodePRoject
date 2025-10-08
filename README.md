@@ -1,8 +1,10 @@
 
 ```markdown
 # 📱 Coding Learning App
-## ⚠️ Project Status
-This app is **currently under development**. Core UI screens like Onboarding and Authentication are implemented. Other features (Course List, Video Lessons, User Profiles, Progress Tracking) are in progress.
+# 📱 Coding Learning App
+
+![Status](https://img.shields.io/badge/status-under_development-orange?style=for-the-badge)
+
 
 A mobile application built with **React Native CLI** for learning coding.  
 Currently, the app includes **Onboarding** and **Authentication** UI screens.  
