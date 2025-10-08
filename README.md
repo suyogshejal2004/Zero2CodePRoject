@@ -1,6 +1,8 @@
 
 ```markdown
 # 📱 Coding Learning App
+## ⚠️ Project Status
+This app is **currently under development**. Core UI screens like Onboarding and Authentication are implemented. Other features (Course List, Video Lessons, User Profiles, Progress Tracking) are in progress.
 
 A mobile application built with **React Native CLI** for learning coding.  
 Currently, the app includes **Onboarding** and **Authentication** UI screens.  
