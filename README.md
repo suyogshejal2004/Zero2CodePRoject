@@ -1,6 +1,6 @@
 
 
-# 📱 Coding Learning App
+
 # 📱 Coding Learning
 
 ![Status](https://img.shields.io/badge/status-in%20progress-orange?style=flat-square&logo=React)
