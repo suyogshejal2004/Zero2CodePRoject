@@ -11,6 +11,19 @@ A mobile application built with **React Native CLI** for learning coding.
 Currently, the app includes **Onboarding** and **Authentication** UI screens.  
 
 ---
+## 📸 Screenshots (UI Preview)
+
+<p align="center">
+ <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/36343bc1-cad7-4cbe-92f3-ec98657f61b7" />
+ <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/989e30f8-a0e8-4bee-ac03-635318347717" />
+ <img width="300" alt="Login" src="https://github.com/user-attachments/assets/d2760611-ef57-47bd-b573-f4addd995517" />
+ <img width="300" alt="Signup" src="https://github.com/user-attachments/assets/d971e0b3-02c3-4176-baf6-fed12deea62e" />
+ <img width="300" alt="Forgot Password" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
+ <img width="300" alt="Splash Screen" src="https://github.com/user-attachments/assets/eebbb0da-e3ad-438b-8131-c7ffe376824b" />
+ <img width="300" alt="Extra Screen" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
+</p>
+
+---
 
 ## 🚀 Features (Implemented)
 - ✅ **Splash Screen**
@@ -72,19 +85,7 @@ npx react-native run-ios
 
 ---
 
-## 📸 Screenshots (UI Preview)
 
-<p align="center">
- <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/36343bc1-cad7-4cbe-92f3-ec98657f61b7" />
- <img width="300" alt="Onboarding" src="https://github.com/user-attachments/assets/989e30f8-a0e8-4bee-ac03-635318347717" />
- <img width="300" alt="Login" src="https://github.com/user-attachments/assets/d2760611-ef57-47bd-b573-f4addd995517" />
- <img width="300" alt="Signup" src="https://github.com/user-attachments/assets/d971e0b3-02c3-4176-baf6-fed12deea62e" />
- <img width="300" alt="Forgot Password" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
- <img width="300" alt="Splash Screen" src="https://github.com/user-attachments/assets/eebbb0da-e3ad-438b-8131-c7ffe376824b" />
- <img width="300" alt="Extra Screen" src="https://github.com/user-attachments/assets/a22a517a-05c8-4d9d-b040-710a32ed59f3" />
-</p>
-
----
 
 ## 🔮 Future Roadmap
 
