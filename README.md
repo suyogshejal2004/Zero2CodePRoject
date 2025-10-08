@@ -3,7 +3,8 @@
 # 📱 Coding Learning App
 # 📱 Coding Learning App
 
-![Status](https://img.shields.io/badge/status-under_development-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-under_development-orange?style=for-the-badge&logo=react)
+
 
 
 A mobile application built with **React Native CLI** for learning coding.  
