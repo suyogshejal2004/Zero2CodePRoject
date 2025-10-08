@@ -1,7 +1,9 @@
 
 ```markdown
 # 📱 Coding Learning App
-# 📱 Coding Learning App
+# 📱 Coding Learning
+
+
 ![Status](https://img.shields.io/badge/status-under_development-orange?style=flat-square&logo=React)
 
 
